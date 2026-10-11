@@ -94,9 +94,8 @@ ML internship/
 
 ```bash
 
-git clone <YOUR\_GITHUB\_REPOSITORY\_URL>
-
-cd <YOUR\_PROJECT\_FOLDER>
+git clone https://github.com/Hemanth18-2004/diabetes-prediction-system.git
+cd diabetes-prediction-system
 
 ```
 
