@@ -33,7 +33,8 @@ app.secret_key = os.environ.get(
     "dev-only-change-this-secret-key"
 )
 
-app.config["SQLALCHEMY_DATABASE_URI"] = (
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    "DATABASE_URL",
     "mysql+pymysql://root:root@localhost/ml_app"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
