@@ -26,6 +26,10 @@ from sklearn.metrics import accuracy_score
 # ==================================================
 # APPLICATION CONFIGURATION
 # ==================================================
+
+# ==================================================
+# APPLICATION CONFIGURATION
+# ==================================================
 app = Flask(__name__)
 
 app.secret_key = os.environ.get(
@@ -33,10 +37,15 @@ app.secret_key = os.environ.get(
     "dev-only-change-this-secret-key"
 )
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "DATABASE_URL",
-    "mysql+pymysql://root:root@localhost/ml_app"
-)
+database_url = os.environ.get("DATABASE_URL")
+
+if not database_url:
+    raise RuntimeError(
+        "DATABASE_URL is not configured. "
+        "Set it in your environment before starting the app."
+    )
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -523,15 +532,20 @@ def predict():
         return render_template("predict.html", result=None)
 
 
+
+# ==================================================
+# DATABASE INITIALIZATION
+# ==================================================
+with app.app_context():
+    db.create_all()
+
+
 # ==================================================
 # START SERVER
 # ==================================================
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-
     app.run(
         debug=False,
-        host="127.0.0.1",
-        port=5000
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
     )
