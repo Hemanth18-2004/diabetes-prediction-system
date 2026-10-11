@@ -1,0 +1,22 @@
+# Python environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Secrets
+.env
+.env.*
+
+# Local installers and dataset
+ML internship/softwares/
+ML internship/diabetes.csv
+ML internship/package-lock.json
+
+# Uploaded files and generated model
+ML internship/ML app/uploads/*
+ML internship/ML app/models/*.joblib
+
+# IDE files
+.vscode/
+.idea/

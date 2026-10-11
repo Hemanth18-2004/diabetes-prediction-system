@@ -1,0 +1,14 @@
+Flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+PyMySQL
+cryptography
+pandas
+scikit-learn
+joblib
+
+
+
+
+How to install all dependencies
+    python -m pip install -r requirements.txt

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5 text-center">
+	<h2>Welcome,{{ username }}</h2>
+	<p>Explore the features of diabetes prediction Aoo.</p>
+	<div class="mt-4">
+		<!--Logout Button -->
+		<form action="/logout" method="post" style="display:inline;">
+			<button type="submit">Logout</button>
+		</form>
+		<!--Start Prediction Button -->
+		<form action="/upload" method="get" style="display:inline;">
+			<button type="submit">Start Diabetes Prediction</button>
+
+		</form>
+	</div>
+</div>
+{% endblock %}
