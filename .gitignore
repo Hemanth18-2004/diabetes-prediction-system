@@ -20,3 +20,7 @@ ML internship/ML app/models/*.joblib
 # IDE files
 .vscode/
 .idea/
+
+# Local documents
+ready.pdf
+*.pdf

@@ -1,44 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="container mt-5">
-    {% if not file_uploaded %}
-        <!-- File Upload Section -->
-        <h2>Upload Dataset for Diabetes Prediction</h2>
-        <form method="POST" action="/upload" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="file">Choose a CSV file:</label>
-                <input type="file" id="file" name="file" class="form-control-file">
+<section class="container mt-4 mb-5 text-start" style="background-color: rgba(30, 41, 59, 0.85); border-radius: 12px; padding: 2rem;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1" style="color: #38bdf8;">Dataset Management & Training</h2>
+            <p class="text-muted small mb-0" style="color: #94a3b8 !important;">Upload clinical patient data or train the model using existing datasets.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-sm">Dashboard</a>
+            <a href="{{ url_for('predict') }}" class="btn btn-info btn-sm">Go to Predict</a>
+        </div>
+    </div>
+
+    <!-- Upload Form Card -->
+    <div class="card p-3 mb-4 border-0" style="background-color: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1);">
+        <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="d-flex flex-wrap align-items-center gap-3">
+            <div class="flex-grow-1">
+                <label for="file" class="form-label text-light fw-bold mb-1">Upload New CSV Dataset:</label>
+                <input type="file" id="file" name="file" accept=".csv" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary mt-3">Upload</button>
+            <div class="align-self-end">
+                <button type="submit" class="btn btn-primary px-4">Upload Dataset</button>
+            </div>
         </form>
-    {% endif %}
-    <!-- Table Preview Section -->
+    </div>
+
+    <!-- Dataset Preview & Actions -->
     {% if file_uploaded %}
-        <h2 class="mt-5">Dataset Preview</h2>
-        <table class="table table-bordered text-dark table-light">
-            <thead>
-                <tr>
-                    {% for col in columns %}
-                        <th>{{ col }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data %}
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+            <h4 class="mb-0 text-info">Dataset Preview (First 10 Rows)</h4>
+            <div class="d-flex gap-2">
+                <form action="{{ url_for('train') }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-success fw-bold px-3">🚀 Train Model</button>
+                </form>
+                <a href="{{ url_for('predict') }}" class="btn btn-outline-info px-3">Make Predictions →</a>
+            </div>
+        </div>
+
+        <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+            <table class="table table-hover table-bordered table-dark small align-middle mb-0">
+                <thead class="table-primary sticky-top text-dark">
                     <tr>
-                        {% for cell in row %}
-                            <td>{{ cell }}</td>
+                        {% for col in columns %}
+                            <th scope="col">{{ col }}</th>
                         {% endfor %}
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-         <form action="{{ url_for('train') }}" method="POST" style="display: inline;">
-                <button type="submit">Train</button>
-        </form>
-        <form action="{{ url_for('predict') }}" style="display: inline;">
-                <button type="submit">Predict</button>
-        </form>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                        <tr>
+                            {% for cell in row %}
+                                <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p class="small text-muted mt-2" style="color: #94a3b8 !important;">
+            * Features included: Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age. Target: Outcome.
+        </p>
     {% endif %}
 </section>
 {% endblock %}

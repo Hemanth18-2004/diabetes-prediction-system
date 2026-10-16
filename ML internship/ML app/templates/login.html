@@ -1,15 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
-	<h1>Login</h1>
-	<h5>Please fill in your credentials to login</h5>
-	<form method="post" action="/login">
-		<label>Email:</label><br>
-		<input type="email" name="email" placeholder="Enter email id here..." required><br><br>
-		<label>Password:</label><br>
-		<input type="password" name="password" placeholder="Enter password here..." required><br><br>
-		<button type="Submit">Login</button>
-	</form>
-	<h4>Don't have an account?<a href="/register">Register here</a></h4>
-</div>
+<section class="auth-card" style="max-width: 480px;">
+    <h2 class="text-center mb-2">Welcome Back</h2>
+    <p class="text-center text-muted small mb-4" style="color: #94a3b8 !important;">Please enter your credentials to access your dashboard</p>
+    
+    <form method="POST" action="{{ url_for('login') }}">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+        </div>
+        
+        <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Sign In</button>
+    </form>
+    
+    <div class="text-center mt-4">
+        <span class="text-muted small" style="color: #94a3b8 !important;">Don't have an account?</span>
+        <a href="{{ url_for('register') }}" class="text-info text-decoration-none fw-bold ms-1">Register here</a>
+    </div>
+</section>
 {% endblock %}

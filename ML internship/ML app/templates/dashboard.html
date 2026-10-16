@@ -1,18 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5 text-center">
-	<h2>Welcome,{{ username }}</h2>
-	<p>Explore the features of diabetes prediction Aoo.</p>
-	<div class="mt-4">
-		<!--Logout Button -->
-		<form action="/logout" method="post" style="display:inline;">
-			<button type="submit">Logout</button>
-		</form>
-		<!--Start Prediction Button -->
-		<form action="/upload" method="get" style="display:inline;">
-			<button type="submit">Start Diabetes Prediction</button>
+<section class="text-center py-4">
+    <div class="mb-4">
+        <h2 class="display-6 fw-bold">Welcome back, <span class="text-info">{{ username }}</span> 👋</h2>
+        <p class="text-muted" style="color: #94a3b8 !important;">Your end-to-end Machine Learning Diabetes Prediction Workspace</p>
+    </div>
 
-		</form>
-	</div>
-</div>
+    <div class="row g-4 mt-2 justify-content-center text-start">
+        <div class="col-md-5">
+            <div class="card h-100 p-4 border-0 shadow-sm" style="background-color: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div class="card-body d-flex flex-column">
+                    <h4 class="text-info mb-2">📁 Step 1: Manage Dataset</h4>
+                    <p class="small text-muted mb-4" style="color: #94a3b8 !important;">
+                        Upload the Pima Indians Diabetes CSV dataset or preview uploaded clinical records for training.
+                    </p>
+                    <div class="mt-auto">
+                        <a href="{{ url_for('upload') }}" class="btn btn-outline-info w-100">Upload Dataset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card h-100 p-4 border-0 shadow-sm" style="background-color: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div class="card-body d-flex flex-column">
+                    <h4 class="text-info mb-2">🩺 Step 2: Clinical Prediction</h4>
+                    <p class="small text-muted mb-4" style="color: #94a3b8 !important;">
+                        Input patient physiological parameters (Glucose, Insulin, BMI, Age, etc.) for instant risk analysis.
+                    </p>
+                    <div class="mt-auto">
+                        <a href="{{ url_for('predict') }}" class="btn btn-success w-100">Start Prediction</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

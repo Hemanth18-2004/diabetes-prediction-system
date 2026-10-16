@@ -1,10 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
-<section>
-	<p>Explore the power of machine learning right at your fingertips.Start by uploading a dataset,training a model and making predictions.
-	</p>
-	<button onclick="location.href='/register'">Get Started</button>
-	<button onclick="location.href='/login'">Login</button>
+<section class="text-center py-5">
+    <div class="py-3">
+        <h1 class="display-5 fw-bold mb-3" style="color: #38bdf8;">AI-Powered Diabetes Risk Prediction</h1>
+        <p class="lead mb-4 mx-auto" style="max-width: 650px; color: #94a3b8;">
+            A complete end-to-end Machine Learning web platform to screen, evaluate, and forecast diabetes likelihood based on clinical diagnostic markers.
+        </p>
+        
+        <div class="d-flex justify-content-center gap-3 mb-5">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 fw-bold">Get Started</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-info btn-lg px-4">Sign In</a>
+        </div>
 
+        <div class="row g-4 mt-2 text-start">
+            <div class="col-md-4">
+                <div class="p-4 rounded-3 h-100" style="background-color: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <h5 class="text-info mb-2">📁 Dataset Ingestion</h5>
+                    <p class="small text-muted mb-0" style="color: #94a3b8 !important;">Upload clinical patient datasets with automated schema validation and numerical cleaning.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 rounded-3 h-100" style="background-color: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <h5 class="text-info mb-2">⚙️ Model Pipeline</h5>
+                    <p class="small text-muted mb-0" style="color: #94a3b8 !important;">Automated data preprocessing with StandardScaler and Scikit-Learn Logistic Regression classification.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 rounded-3 h-100" style="background-color: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <h5 class="text-info mb-2">📊 Real-Time Inference</h5>
+                    <p class="small text-muted mb-0" style="color: #94a3b8 !important;">Interactive clinical parameter input with immediate risk classification and probability scoring.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock %}

@@ -1,16 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
-	<h1>Registration</h1>
-	<h5>Please fill in your details to create an account</h5>
-	<form method="post" action="/register">
-		<label>Username:</label><br>
-		<input type="text" name="username" placeholder="Enter username here..." required><br><br>
-		<label>Password:</label><br>
-		<input type="password" name="password" placeholder="Enter password here..." required><br><br>
-		<label>Email:</label><br>
-		<input type="email" name="email" placeholder="Enter email here..." required><br><br>
-		<button type="Submit">Register</button>
-	</form>
-</div>
+<section class="auth-card" style="max-width: 480px;">
+    <h2 class="text-center mb-2">Create Account</h2>
+    <p class="text-center text-muted small mb-4" style="color: #94a3b8 !important;">Register to start using the Diabetes Prediction System</p>
+    
+    <form method="POST" action="{{ url_for('register') }}">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="johndoe" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+        </div>
+        
+        <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+        </div>
+        
+        <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Sign Up</button>
+    </form>
+    
+    <div class="text-center mt-4">
+        <span class="text-muted small" style="color: #94a3b8 !important;">Already registered?</span>
+        <a href="{{ url_for('login') }}" class="text-info text-decoration-none fw-bold ms-1">Login here</a>
+    </div>
+</section>
 {% endblock %}

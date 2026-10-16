@@ -37,13 +37,10 @@ app.secret_key = os.environ.get(
     "dev-only-change-this-secret-key"
 )
 
-database_url = os.environ.get("DATABASE_URL")
-
-if not database_url:
-    raise RuntimeError(
-        "DATABASE_URL is not configured. "
-        "Set it in your environment before starting the app."
-    )
+database_url = os.environ.get(
+    "DATABASE_URL",
+    "mysql+pymysql://root:root@localhost:3306/ml_app"
+)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -316,6 +313,20 @@ def upload():
                 "Unable to read the dataset. Check the terminal.",
                 "danger"
             )
+    else:
+        existing_files = sorted(
+            UPLOAD_FOLDER.glob("*.csv"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True
+        )
+        if existing_files:
+            try:
+                dataset = pd.read_csv(existing_files[0])
+                file_uploaded = True
+                columns = dataset.columns.tolist()
+                data = dataset.head(10).values.tolist()
+            except Exception:
+                pass
 
     return render_template(
         "upload.html",

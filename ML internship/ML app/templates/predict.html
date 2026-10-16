@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="container mt-4 mb-5 text-start" style="background-color: rgba(0, 0, 0, 0.75); border-radius: 12px; padding: 2rem; color: #fff;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 style="color: #6FBFAF; margin: 0;">Diabetes Risk Prediction</h2>
+        <div>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-info btn-sm me-2">Dashboard</a>
+            <a href="{{ url_for('upload') }}" class="btn btn-outline-light btn-sm">Upload / Retrain</a>
+        </div>
+    </div>
+    <p style="font-size: 1rem; color: #ADD8E6;" class="mb-4">
+        Enter the patient's clinical and physiological parameters below to evaluate the probability of diabetes using the trained machine learning model.
+    </p>
+
+    <!-- Prediction Result Display -->
+    {% if result %}
+    <div class="card mb-4 border-0 shadow" style="background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);">
+        <div class="card-body text-center p-4">
+            <h4 class="mb-3">Prediction Assessment</h4>
+            {% if result.prediction == 1 %}
+                <div class="alert alert-danger d-inline-block px-4 py-2 fs-5 fw-bold" role="alert">
+                    ⚠️ Positive: High Risk of Diabetes
+                </div>
+                <h5 class="mt-2 text-warning">
+                    Estimated Probability: <strong>{{ result.probability }}%</strong>
+                </h5>
+                <p class="text-light mt-2" style="font-size: 0.95rem;">
+                    The clinical parameters indicate elevated markers associated with diabetes. Further laboratory diagnostic testing (such as fasting blood glucose and HbA1c) is strongly advised.
+                </p>
+            {% else %}
+                <div class="alert alert-success d-inline-block px-4 py-2 fs-5 fw-bold" role="alert">
+                    ✅ Negative: Low Risk of Diabetes
+                </div>
+                <h5 class="mt-2 text-info">
+                    Estimated Risk Probability: <strong>{{ result.probability }}%</strong>
+                </h5>
+                <p class="text-light mt-2" style="font-size: 0.95rem;">
+                    The clinical indicators fall within typical baseline ranges. Continue healthy lifestyle habits, regular physical activity, and balanced nutrition.
+                </p>
+            {% endif %}
+            <small class="text-muted d-block mt-2">
+                * Note: Model predictions are for screening and educational purposes and should not substitute professional medical diagnosis.
+            </small>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Prediction Form -->
+    <form method="POST" action="{{ url_for('predict') }}" id="predictionForm">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="Pregnancies" class="form-label text-light fw-bold">Pregnancies</label>
+                <input type="number" class="form-control" id="Pregnancies" name="Pregnancies" min="0" max="20" step="1" placeholder="e.g. 2" required>
+                <div class="form-text text-light opacity-75">Number of times pregnant</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="Glucose" class="form-label text-light fw-bold">Plasma Glucose Concentration (mg/dL)</label>
+                <input type="number" class="form-control" id="Glucose" name="Glucose" min="0" max="500" step="any" placeholder="e.g. 120 (Normal: 70-140)" required>
+                <div class="form-text text-light opacity-75">2 hours in an oral glucose tolerance test</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="BloodPressure" class="form-label text-light fw-bold">Diastolic Blood Pressure (mm Hg)</label>
+                <input type="number" class="form-control" id="BloodPressure" name="BloodPressure" min="0" max="250" step="any" placeholder="e.g. 70 (Normal: 60-80)" required>
+                <div class="form-text text-light opacity-75">Resting diastolic pressure</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="SkinThickness" class="form-label text-light fw-bold">Triceps Skin Fold Thickness (mm)</label>
+                <input type="number" class="form-control" id="SkinThickness" name="SkinThickness" min="0" max="100" step="any" placeholder="e.g. 20" required>
+                <div class="form-text text-light opacity-75">Measurement of body fat layer</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="Insulin" class="form-label text-light fw-bold">2-Hour Serum Insulin (mu U/ml)</label>
+                <input type="number" class="form-control" id="Insulin" name="Insulin" min="0" max="900" step="any" placeholder="e.g. 80" required>
+                <div class="form-text text-light opacity-75">Serum insulin after glucose challenge</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="BMI" class="form-label text-light fw-bold">Body Mass Index (BMI)</label>
+                <input type="number" class="form-control" id="BMI" name="BMI" min="0" max="100" step="0.1" placeholder="e.g. 25.5 (kg/m²)" required>
+                <div class="form-text text-light opacity-75">Weight in kg / (height in m)²</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="DiabetesPedigreeFunction" class="form-label text-light fw-bold">Diabetes Pedigree Function</label>
+                <input type="number" class="form-control" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" min="0" max="3" step="0.001" placeholder="e.g. 0.45" required>
+                <div class="form-text text-light opacity-75">Genetic diabetes risk score based on family history</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="Age" class="form-label text-light fw-bold">Age (Years)</label>
+                <input type="number" class="form-control" id="Age" name="Age" min="1" max="120" step="1" placeholder="e.g. 33" required>
+                <div class="form-text text-light opacity-75">Patient's chronological age</div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex flex-wrap gap-2 justify-content-center">
+            <button type="submit" class="btn btn-success px-4 py-2 fw-bold">Run Prediction</button>
+            <button type="button" class="btn btn-outline-info px-3" onclick="fillHealthyDemo()">Fill Demo (Low Risk)</button>
+            <button type="button" class="btn btn-outline-warning px-3" onclick="fillHighRiskDemo()">Fill Demo (High Risk)</button>
+            <button type="reset" class="btn btn-secondary px-3">Reset</button>
+        </div>
+    </form>
+</section>
+
+<script>
+function fillHealthyDemo() {
+    document.getElementById('Pregnancies').value = 1;
+    document.getElementById('Glucose').value = 85;
+    document.getElementById('BloodPressure').value = 66;
+    document.getElementById('SkinThickness').value = 29;
+    document.getElementById('Insulin').value = 0;
+    document.getElementById('BMI').value = 26.6;
+    document.getElementById('DiabetesPedigreeFunction').value = 0.351;
+    document.getElementById('Age').value = 31;
+}
+
+function fillHighRiskDemo() {
+    document.getElementById('Pregnancies').value = 6;
+    document.getElementById('Glucose').value = 168;
+    document.getElementById('BloodPressure').value = 88;
+    document.getElementById('SkinThickness').value = 35;
+    document.getElementById('Insulin').value = 210;
+    document.getElementById('BMI').value = 38.5;
+    document.getElementById('DiabetesPedigreeFunction').value = 0.837;
+    document.getElementById('Age').value = 52;
+}
+</script>
+{% endblock %}
